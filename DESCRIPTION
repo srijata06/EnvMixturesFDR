@@ -1,0 +1,28 @@
+Package: EnvMixturesFDR
+Type: Package
+Title: Identifying and estimating effects of exposures and their interactions while controlling false discovery rate (FDR).
+Version: 0.1.0
+Author: Srijata Samanta
+Maintainer: Srijata Samanta <srijata.s06@gmail.com>
+Description: We use debiased lasso and the knockoffs approach to perform variable selection on both main and interaction effects of environmental exposures and also perform inference on the outcome.
+License: GPL (>= 2)
+LazyData: TRUE
+URL: https://github.com/srijata06/EnvMixturesFDR
+BugReports: https://github.com/srijata06/test/issues
+RoxygenNote: 7.1.2
+Suggests:
+    ggplot2,
+    glmnet,
+    npreg,
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+Imports:
+    mvtnorm,
+    statmod,
+    knockoff,
+    glmnet,
+    stats,
+    truncnorm,
+    splines
