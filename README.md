@@ -51,14 +51,16 @@ Now we describe how to implement the proposed approaches using the package. We h
 one each for an approach. For the two methods based on the knockoffs procedure we have the functions
 `knockoffsSplit()` and `knockoffsFull()`. The former performs exposure/interaction selection using one 
 half of the data and conditional inference using the other half of the data while the later uses 
-the entire dataset for both the steps. The function `DBL()` performs estimation and variable selection
+the entire dataset for both the steps. Both of these functions have the option of using either the 
+conservative version or the regular (or non-conservative) version of knockoffs in terms of controlling FDR (the default being conservative = FALSE).
+The function `DBL()` performs estimation and variable selection
 using debiased lasso. 
 
 ```R
-kSplit_Results = knockoffsSplit(Y=Y, x=X, C=C, xnew=Xnew, q=0.25)        ##### default value of q is 0.2
-kFull_Results = knockoffsFull(Y=Y, x=X, C=C, xnew=Xnew, q=0.25)          ##### default value of q is 0.2
-DBLresults = DBL(Y=Y, x=X, C=C, xnew=Xnew, q=0.25)                       ##### default value of q is 0.2
+kSplit_Results = knockoffsSplit(Y=Y, x=X, C=C, xnew=Xnew, q=0.25, conservative = FALSE)      ##### default value of q is 0.2 
+kFull_Results = knockoffsFull(Y=Y, x=X, C=C, xnew=Xnew, q=0.25, conservative = FALSE)        ##### default value of q is 0.2
+DBLresults = DBL(Y=Y, x=X, C=C, xnew=Xnew, q=0.25, conservative = FALSE)                     ##### default value of q is 0.2
 ```  
 
 The functions `knockoffsSplit()`, `knockoffsFull()` and `DBL()` return important main effects, important interaction 
-effects, the estimated outcome, computation time and confidence intervals for the estimated response. 
+effects, the estimated overall exposure effect and the 95% confidence intervals for the estimated response. 
