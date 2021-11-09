@@ -42,7 +42,7 @@ Y = TrueF(X) + C + rnorm(n)
 
 This gives us data on `p = 10` exposures and 1 additional confounder variable (i,e, additional 
 variable we adjust for example: age) and an outcome depending on these exposures and the confounder. 
-The matrix Xnew is created to be used for inference (estimation) purposes, specifically to calculte
+The matrix Xnew is created to be used for inference purposes, specifically to calculate
 the MSE and confidence intervals of the estimated response.
 
 ### Using the functions
