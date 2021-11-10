@@ -9,22 +9,22 @@
 #' @param C                   An n by q matrix of additional covariates to adjust for.
 #' @param xnew                A design matrix with p exposure values for estimation purpose.
 #' @param q                   The false discovery rate threshold. 
+#' @param conservative        logical; if TRUE the conservative version of knockoffs is applied. Default is FALSE.
 #'
 #' @importFrom glmnet glmnet cv.glmnet
 #' @importFrom mvtnorm dmvnorm rmvnorm
 #' @importFrom stats lm rgamma runif rbeta cov var rnorm coef vcov
 #' @importFrom knockoff create.second_order
-#' @return A list of values with important main effects and interactions, estimates, 95\% CI and computation time.
+#' @return A list of values containing important main effects and interactions, estimate of the overall exposure effect and the 95\% CI of the estimated response.
 #'
 #' @export
 
 
-knockoffsFull = function(Y, x, C, xnew, q=0.2) {
+knockoffsFull = function(Y, x, C, xnew, q=0.2, conservative = FALSE) {
   
   binary_alpha = q
   n = length(Y)
   G = dim(x)[2]
-  start = proc.time()
   pc = 1
   if (!is.null(dim(C)[2])) {
     pc = dim(C)[2]
@@ -43,7 +43,6 @@ knockoffsFull = function(Y, x, C, xnew, q=0.2) {
   
   DFselect = DFselection(Y=Y, x=x, C=C)
   mg = DFselect$df
-  time_df = DFselect$time
   X1 = matrix(NA, nrow=n1, ncol=(G*mg) + choose(G,2)*(mg^2))
   X1knock = matrix(NA, nrow=n1, ncol=(G*mg) + choose(G,2)*(mg^2))
   
@@ -328,9 +327,6 @@ knockoffsFull = function(Y, x, C, xnew, q=0.2) {
                       lower = CIlower,
                       upper = CIupper)
   
-  end = proc.time()
-  timet = end[3] - start[3]
-  
   
   
   ## Do the rest of the process with the conservative model selection
@@ -504,12 +500,16 @@ knockoffsFull = function(Y, x, C, xnew, q=0.2) {
                  importantInt = importantInt,
                  est = est,
                  lower = CIlower,
-                 upper = CIupper, time = timet)
+                 upper = CIupper)
   
-  l = list(regular = regular,
-           conservative = conservative)
+  if(conservative == FALSE){
+    return(regular)
+  }else{
+    return(conservative)
+  }
   
-  return(l)
   
 }
+
+
 
