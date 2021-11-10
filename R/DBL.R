@@ -14,14 +14,14 @@
 #' @importFrom mvtnorm dmvnorm rmvnorm
 #' @importFrom stats lm rgamma runif rbeta cov var rnorm coef vcov
 #' @importFrom knockoff create.second_order
-#' @return A list of values with important main effects and interactions, estimates, 95\% CI, debiased lasso estimates of the coefficients and computation time.
+#' @return A list of values containing important main effects and interactions, estimate of the overall exposure effect and the 95\% CI of the estimated response.
 #'
 #' @export
 
 
 
 DBL = function(Y, x, C, xnew, q=0.2){
-  start = proc.time()
+  
   n = dim(x)[1]
   n2 = dim(xnew)[1]
   G = ncol(x)
@@ -74,7 +74,6 @@ DBL = function(Y, x, C, xnew, q=0.2){
   } 
   DFselect = DFselection(Y=Y, x=x, C=C)
   mg = DFselect$df
-  time_df = DFselect$time
   
   X2 = X1[[mg]]
   Xnew2 = Xnew1[[mg]]
@@ -195,12 +194,10 @@ DBL = function(Y, x, C, xnew, q=0.2){
   if (nrow(importantInt2) > 0) {
     names(importantInt2) = c("X1", "X2")   
   }
-  end = proc.time()
-  time = end[3] - start[3]
+  
   return(list("importantMain" = importantMain1, 
               "importantInt" = importantInt1,
               "est" = estimate,"lower" = conf_int[,1],
-              "upper" = conf_int[,2], "time" = time, 
-              "debiasednew" = debiasednew))
+              "upper" = conf_int[,2]))
   
 }
